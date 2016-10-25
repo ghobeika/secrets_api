@@ -15,7 +15,9 @@ var bCrypt = require('bcrypt-nodejs');
 app = express();
 app.use(bp.urlencoded({extend: false}))
 app.use(bp.json());
+console.log("try to connect")
 mongoose.connect(config.database);
+console.log("weve connected")
 const server_options = {  
 	key: fs.readFileSync('key.pem'),
 	cert: fs.readFileSync('cert.pem'),
@@ -39,8 +41,9 @@ var tokenVerify = function(req,res,next){ // this is a "middleware" to do token 
 			if(err){
 				return res.json({message: "Token could not be authenticated"});
 			} else {
+				console.log(decoded)
 				req.username = decoded.user // the decoded JWT contains the username 
-				next();
+				return next();
 			}
 		})
 	}else{
@@ -50,6 +53,7 @@ var tokenVerify = function(req,res,next){ // this is a "middleware" to do token 
 	}
 
 }
+
 
 
 
@@ -74,7 +78,7 @@ apiRouter.post('/registerNewUser', function(req,res){
 			var newUser = new User();
 			newUser.username = req.body.name
 			newUser.password = createHash(req.body.pw)
-			newUser.secrets = []
+			newUser.secrets = new Array()
 			newUser.token = null
 			newUser.save(function(err){
 				if(err){
@@ -120,13 +124,25 @@ apiRouter.post('/getNewKey', function(req,res){
 
 
 apiRouter.post('/newSecret', tokenVerify, function(req,res){
+	console.log('Dis a new secret')
+	console.log(req.username)
 	User.findOne({
 		username: req.username 
 	}, function(err, user){
+		console.log("hi")
 		if(err){
 			throw(err)
 			res.json({success: "Failed", message: "DB Error try again"})
 		}if(user){
+			if(!req.body.secret){
+				res.json({success: "Failed", message: "Submit a secret"})
+			}else{
+				if(typeof(user.secrets == Object)){
+					user.secrets.push(req.body.secret)
+					user.save()
+					res.json({sucess: "Successful", message: "Your secret has been added"})
+				}
+			}
 
 		}else{
 			Console.log("must be something weird")
@@ -144,7 +160,7 @@ apiRouter.get('/getAllSecrets', tokenVerify, function(req,res){
 			throw(err)
 			res.json({success: "Failed", message: "DB Error try again"})
 		}if(user){
-
+			res.json({success: "Successful", message: user.secrets})
 		}else{
 			Console.log("must be something weird")
 			res.json({success: 'Failed', message: 'Could not find your account, generate a new token'})
@@ -160,7 +176,13 @@ apiRouter.get('/getSpecificSecret', tokenVerify, function(req, res){
 			throw(err)
  			res.json({success: "Failed", message: "DB Error try again"})
 		}if(user){
-
+			secretNumStr = req.headers["x-secret-num"]
+			if(!secretNumStr|| parseInt(secretNumStr) === NaN
+				|| user.secrets[parseInt(secretNumStr)] == null){
+				res.json({success: "Failed", message: "Provide a valid index of the secret you want to see"})
+			}else{
+				res.json({success: "Successful", message: user.secrets[parseInt(secretNumStr)]})
+			}
 		}else{
 			Console.log("must be something weird")
 			res.json({success: 'Failed', message: 'Could not find your account, generate a new token'})
@@ -175,6 +197,13 @@ apiRouter.post('/changeSecret', tokenVerify, function(req,res){
 		if(err){
 			throw(err)
 		}if(user){
+			secretNumStr = req.headers["x-secret-num"] || req.body.secretNum
+			if(!secretNumStr|| parseInt(secretNumStr) === NaN
+				|| user.secrets[parseInt(secretNumStr)] == null){
+				res.json({success: "Failed", message: "Provide a valid index of the secret you want to see"})
+			}else{
+				res.json({success: "Successful", message: user.secrets[parseInt(secretNumStr)]})
+			}
 
 		}else{
 			Console.log("must be something weird")
@@ -190,7 +219,13 @@ apiRouter.post('/deleteSecret',  tokenVerify, function(req,res){
 		if(err){
 			throw(err)
 		}if(user){
-
+			secretNumStr = req.headers["x-secret-num"]
+			if(!secretNumStr|| parseInt(secretNumStr) === NaN
+				|| user.secrets[parseInt(secretNumStr)] == null){
+				res.json({success: "Failed", message: "Provide a valid index of the secret you want to see"})
+			}else{
+				res.json({success: "Successful", message: user.secrets[parseInt(secretNumStr)]})
+			}
 		}else{
 			Console.log("must be something weird")
 			res.json({success: 'Failed', message: 'Could not find your account, generate a new token'})
