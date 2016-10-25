@@ -134,7 +134,6 @@ apiRouter.post('/getNewKey', function(req,res){
 
 
 apiRouter.post('/newSecret', tokenVerify, function(req,res){
-	console.log('Dis a new secret')
 	console.log(req.username)
 	User.findOne({
 		username: req.username 
