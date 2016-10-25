@@ -16,22 +16,37 @@ Those secrets are stored in an array. Many secrets can be added, secrets can als
 
 ##API Methods
 GET: /    (this is just a welcome mesage)
+
 POST: /registerNewUser
+
 POST: /getNewKey
+
 POST: /NewSecret 
+
 GET: /getAllSecrets
+
 GET: /getSpecificSecrets
+
 POST: /changeSecret
+
 POST: /deleteSecret
 
 The POST requests support all fields being passed through in the body of the request.
+
 The GET requuest expet all relevent fields be passed through the headers of the request.
 
 ###Methods broken down
 |Request Type| Endpoint Name     | Params                         | Meaning               |
 |------------|-------------------|--------------------------------|-----------------------|
 | GET        | / (welcome)       | None                           | Just a welcome message| 
-| POST       | /registerNewUser  | NAME: string, PASSWORD: String | 
+| POST       | /registerNewUser  | NAME: string, PW: string | Attempts to register a new user with username NAME, and password PW|
+| POST       | /getNewKey        | NAME: string, PW: string | Generates an API token for the user to use from this point on |
+| POST       | /NewSecret        | token: your token, secret:string| Given a valid token, adds a given secret to the user's secrets|
+| GET        | /getAllSecrets    |x-access-token: your token| given a valid token, returns all secrets for that user |
+| GET        | /getSpecificSecrets| x-acces-token: your token, x-secret-num: int index of secret.| Given a valid token and secret index, returns that secret| 
+| POST       | /changeSecret     | token: your token, secretNum: int index of secret, newSecret: string| Given valid index and token, replaces secret with newSecret|
+| POST       | /deleteSecret     | token: your token, secretNum: int index of secret| Given valid params deletes that index in secrets array| 
+
 
 
 
@@ -51,6 +66,7 @@ The GET requuest expet all relevent fields be passed through the headers of the 
 
 
 ##What I wish I had time for!
+(I've only worked on this for )
 
 ###CODE CLEANUP: 
 A huge Server.js file is bad form, I could've split up a lot of the code into smaller more readable files with some extra time.
@@ -61,6 +77,9 @@ I should have made that it's own middleware, but I did not properly design the c
  So far my tests have been limited to trying to create edge-cases in Postman. 
 Due to the limited amount of time I had to work on the API, I didn't bother to write good unit tests.
 As a result, there may be some overlooked errors in the API, but the API should function as expected otherwise. 
+
+###Better error codes
+There should be expected error codes back to the user for the API endpoints, right now there are just semi-descriptive error messages.
 
 ###Properly encrypting secrets
 Properly encrypting the user secrets. I overlooked encrypting user secrets and did not create a good method of doing so. 

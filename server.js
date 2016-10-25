@@ -236,7 +236,7 @@ apiRouter.post('/deleteSecret',  tokenVerify, function(req,res){
 		if(err){
 			throw(err)
 		}if(user){
-			secretNumStr = req.headers["x-secret-num"]
+			secretNumStr = req.headers["x-secret-num"] || req.body.secretNum
 			if(!secretNumStr|| parseInt(secretNumStr) === NaN
 				|| user.secrets[parseInt(secretNumStr)] == null){
 				res.json({success: "Failed", message: "Provide a valid index of the secret you want to delete"})
