@@ -200,9 +200,16 @@ apiRouter.post('/changeSecret', tokenVerify, function(req,res){
 			secretNumStr = req.headers["x-secret-num"] || req.body.secretNum
 			if(!secretNumStr|| parseInt(secretNumStr) === NaN
 				|| user.secrets[parseInt(secretNumStr)] == null){
-				res.json({success: "Failed", message: "Provide a valid index of the secret you want to see"})
+				res.json({success: "Failed", message: "Provide a valid index of the secret you want to modify"})
 			}else{
-				res.json({success: "Successful", message: user.secrets[parseInt(secretNumStr)]})
+				newSecret = req.headers["new-secret"] || req.body.newSecret;
+				if(!newSecret){
+					res.json({success: "Failed", message: "Provide a new secret please."})
+				}else{
+				user.secrets[parseInt(secretNumStr)] = newSecret
+				user.save()
+				res.json({success: "Successful", message: "your secret has been chaged to:" + user.secrets[parseInt(secretNumStr)]})
+				}
 			}
 
 		}else{
@@ -222,9 +229,11 @@ apiRouter.post('/deleteSecret',  tokenVerify, function(req,res){
 			secretNumStr = req.headers["x-secret-num"]
 			if(!secretNumStr|| parseInt(secretNumStr) === NaN
 				|| user.secrets[parseInt(secretNumStr)] == null){
-				res.json({success: "Failed", message: "Provide a valid index of the secret you want to see"})
+				res.json({success: "Failed", message: "Provide a valid index of the secret you want to delete"})
 			}else{
-				res.json({success: "Successful", message: user.secrets[parseInt(secretNumStr)]})
+				user.secrets.splice(parseInt(secretNumStr), 1) // the 1 here just says remove 1 element 
+				user.save()
+				res.json({success: "Successful", message: "Your secret has been deleted"})
 			}
 		}else{
 			Console.log("must be something weird")
