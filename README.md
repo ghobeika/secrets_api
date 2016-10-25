@@ -44,23 +44,18 @@ The GET requuest expet all relevent fields be passed through the headers of the 
 
 
 
-
-
-
-
-
-
 ##What I wish I had time for!
 
-CODE CLEANUP: 
+###CODE CLEANUP: 
 A huge Server.js file is bad form, I could've split up a lot of the code into smaller more readable files with some extra time.
 Additionally, pulling more shared code out into middleware (specifically looking for a specific secret has a lot of shared code). 
 I should have made that it's own middleware, but I did not properly design the code at first to make it easy to pull out. 
 
-Write automated tests! So far my tests have been limited to trying to create edge-cases in Postman. 
+###Write automated tests!
+ So far my tests have been limited to trying to create edge-cases in Postman. 
 Due to the limited amount of time I had to work on the API, I didn't bother to write good unit tests.
 As a result, there may be some overlooked errors in the API, but the API should function as expected otherwise. 
 
-Also: 
+###Properly encrypting secrets
 Properly encrypting the user secrets. I overlooked encrypting user secrets and did not create a good method of doing so. 
 I could've done it similar to passwords, but I felt there might be a better way to do it. 
