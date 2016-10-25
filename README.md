@@ -78,6 +78,10 @@ NOTE: To do SSL it is using self-signed certs, so you may get warnings.
 The api will be hosted at localhost:8443, all endpoints are just routes off /. 
 You can use postman or well formed curl requests to test the API.
 
+##A deployment 
+NOTE: it is deployed at https://45.55.185.21 on port 443 as well
+You can totally DDOS this server as there's no limit to how many accounts you can request. Please don't
+
 
 
 
