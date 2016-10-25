@@ -13,6 +13,8 @@ Accounts can then create API-tokens via the get api-token request. These api tok
 Users can then submit secrets. Only a user with a valid token for that user account can see the secrets for that user account. 
 Those secrets are stored in an array. Many secrets can be added, secrets can also be modified, or delted. 
 
+All items are returned to the user as JSON.
+
 
 ##API Methods
 GET: /    (this is just a welcome mesage)
