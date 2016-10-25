@@ -42,8 +42,17 @@ var tokenVerify = function(req,res,next){ // this is a "middleware" to do token 
 				return res.json({message: "Token could not be authenticated"});
 			} else {
 				console.log(decoded)
-				req.username = decoded.user // the decoded JWT contains the username 
-				return next();
+				User.findOne({
+					username: decoded.user,
+					token: token }, function(err,user){
+						if(err){
+							throw(err)
+						}if(!user){
+							return res.json({message: "Token is invalid"})
+						}
+						req.username = decoded.user // the decoded JWT contains the username 
+						return next();
+					});
 			}
 		})
 	}else{
@@ -109,6 +118,7 @@ apiRouter.post('/getNewKey', function(req,res){
 		}else{
 			var token = jwt.sign({user: user.username}, config.secret)
 			user.token = token 
+			console.log(user.secrets)
 			user.save(function(err){
 				if(err){
 					throw(err)
