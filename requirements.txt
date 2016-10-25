@@ -1,0 +1,25 @@
+requirements
+Programming assignment:
+
+Your task is to build a REST API to store personal secrets (front end optional).
+
+- You should have some form of user authentication. How you choose to do this (sessions, API keys, etc.) is up to you.
+
+- Secrets should be able to be updated and deleted after they're created. Only the user who wrote a secret should be able to view/update/delete it.
+
+- All data should be stored persistently (i.e., it survives restarts of the application)
+
+Feel free to use any programming language/framework and datastore that you like.
+
+Please include the following:
+
+- A listing of all URIs in your API, with their inputs and responses. (A simple text or markdown file is fine.)
+
+- A description of how you tested your API, with test files or scripts if applicable. (Optional: include instructions on how to build/run your code and/or a live deployment.)
+
+- A link to a repository hosting page such as Github or Bitbucket. If you prefer using a private repo, we’ll give you the details of who to share it with.
+
+- If applicable, notes about any interesting design decisions that you made, or any further refinements you would have made if you had more time.
+
+Make sure you’ve tested your code before submitting!
+
