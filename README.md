@@ -57,8 +57,26 @@ The GET requuest expet all relevent fields be passed through the headers of the 
 
 ##Testing Methodology 
 
+I did not have time to test this API robustly. 
+What I did do was use postman to do the following: 
+
+Break every endpoint, I tried to pass invalid values to each endpoint to see if it would break. 
+Use every endpoint, I tried to pass valid values to eah endpoint to examine if it worked as expected.
+
+I did these tests everytime an endpoint was added, and repeated the tests for each new endpoint added.
+
+I then tried to access other user data, and use old tokens to acquire user data. 
+IF I had more time, I would encapsulate these tests, and more unit/edgecase/datatype tests in a testing script.
+
 
 ##Deployment 
+
+To install this file just run npm install in your root. 
+Then run node server.js. 
+The file should connect to my modulus DB for use. 
+NOTE: To do SSL it is using self-signed certs, so you may get warnings. 
+The api will be hosted at localhost:8443, all endpoints are just routes off /. 
+You can use postman or well formed curl requests to test the API.
 
 
 
